@@ -22,30 +22,26 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         this.userDetailsService = userDetailsService;
     }
 
-    // CRITICAL: Bypass JWT filtering entirely for authentication and static asset routes
-    @Override
-    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-        String path = request.getRequestURI();
-        return path.startsWith("/api/auth/") ||
-                path.equals("/") ||
-                path.equals("/index.html") ||
-                path.startsWith("/css/") ||
-                path.startsWith("/js/");
-    }
-
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
+        System.out.println(">>> JWT FILTER HIT: " + request.getMethod() + " " + request.getRequestURI());
         String header = request.getHeader("Authorization");
+        System.out.println(">>> Authorization header present: " + (header != null));
+
         if (header != null && header.startsWith("Bearer ")) {
             String token = header.substring(7);
             try {
                 String email = tokenProvider.validateTokenAndGetEmail(token);
+                System.out.println(">>> Token valid for email: " + email);
                 UserDetails userDetails = userDetailsService.loadUserByUsername(email);
                 UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
                         userDetails, null, userDetails.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(auth);
+                System.out.println(">>> SecurityContext set successfully");
             } catch (Exception e) {
+                System.out.println(">>> JWT VALIDATION FAILED: " + e.getClass().getSimpleName() + " - " + e.getMessage());
+                e.printStackTrace();
                 SecurityContextHolder.clearContext();
             }
         }

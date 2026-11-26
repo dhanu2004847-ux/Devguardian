@@ -2,6 +2,7 @@ package com.devguardian.pr;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/pr")
@@ -15,19 +16,17 @@ public class PRController {
     }
 
     @PostMapping("/{prRecordId}/approve")
-    public ResponseEntity<Void> approve(@PathVariable Long prRecordId) {
-        prService.approveFix(prRecordId);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<PullRequestRecord> approve(@PathVariable Long prRecordId) {
+        return ResponseEntity.ok(prService.approveFix(prRecordId));
     }
 
     @PostMapping("/{prRecordId}/reject")
-    public ResponseEntity<Void> reject(@PathVariable Long prRecordId) {
-        prService.rejectFix(prRecordId);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<PullRequestRecord> reject(@PathVariable Long prRecordId) {
+        return ResponseEntity.ok(prService.rejectFix(prRecordId));
     }
 
     @GetMapping("/{repoId}")
-    public ResponseEntity<?> listPRs(@PathVariable Long repoId) {
+    public ResponseEntity<List<PullRequestRecord>> listPRs(@PathVariable Long repoId) {
         return ResponseEntity.ok(prService.listPRs(repoId));
     }
 }

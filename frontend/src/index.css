@@ -1,0 +1,46 @@
+:root {
+  --bg: #0B1120;
+  --surface: #111A2E;
+  --surface-2: #16233D;
+  --border: #233252;
+  --text: #E2E8F0;
+  --text-dim: #8FA0BF;
+  --accent: #22D3A6;
+  --accent-dim: #17997A;
+  --critical: #F0475D;
+  --high: #F5834C;
+  --medium: #F0B94A;
+  --low: #5AA7F0;
+  --mono: 'JetBrains Mono', 'Fira Code', monospace;
+  --sans: 'Inter', -apple-system, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  line-height: 1.6;
+}
+
+code, .mono {
+  font-family: var(--mono);
+}
+
+/* Scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-dim);
+}

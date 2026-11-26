@@ -14,6 +14,18 @@ public class Finding {
     private String title;
     private String severity;
 
+    // Where the problem is, and what the code looked like at scan time.
+    @Column(length = 500)
+    private String filePath;
+
+    private Integer startLine;
+
+    @Column(columnDefinition = "TEXT")
+    private String message;
+
+    @Column(columnDefinition = "TEXT")
+    private String codeSnippet;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "scan_result_id", nullable = false)
     private ScanResult scanResult;
